@@ -1,0 +1,9 @@
+fastapi==0.110.1
+uvicorn==0.29.0
+pydantic==2.6.4
+numpy==1.25.2
+sentence-transformers==2.6.1
+nltk==3.8.1
+pymorphy2==0.9.1
+scikit-learn==1.2.2
+huggingface_hub== 0.20.3

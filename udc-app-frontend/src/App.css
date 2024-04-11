@@ -1,0 +1,124 @@
+/* Base styles */
+.App {
+  text-align: center;
+}
+
+.centered {
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  padding: 20px;
+  margin-bottom: 50px;
+}
+
+/* Header styles */
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+/* Logo animation */
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Results styles */
+.results {
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.results > div {
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-top: 25px;
+}
+
+.keywords, .udcs {
+  width: 20%;
+  margin: 0 10px;
+}
+
+.keywords h2, .udcs h2 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.keywords p, .udcs ul {
+  text-align: left;
+}
+
+/* Input styles */
+.label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.textarea {
+  width: 43%;
+  height: 150px;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  resize: none;
+}
+
+.slider {
+  width: 43%;
+  margin-left: 28.5%;
+}
+
+.kw_textarea {
+  width: 96%;
+  height: 150px;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  resize: none;
+}
+
+.input-label {
+  text-align: left;
+  margin-left: 28%;
+  margin-bottom: 5px;
+}
+
+/* Button styles */
+button {
+  width: 10%;
+  padding: 5px;
+  margin-top: 0px;
+}
+
+/* Scrollable text */
+.results p, ul {
+  overflow-y: auto;
+  max-height: 200px;
+}

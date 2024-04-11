@@ -1,0 +1,18 @@
+version: '3.7'
+services: 
+    docker-fastapi:
+        container_name: docker-fastapi
+        build: 
+            context: ./udc-app-backend/
+            dockerfile: Dockerfile
+        restart: always
+    nginx:
+        depends_on: 
+            - docker-fastapi
+        container_name: proxy-app
+        build: 
+            context: ./udc-app-frontend/
+            dockerfile: Dockerfile
+        ports: 
+            - "80:80"
+        restart: always
