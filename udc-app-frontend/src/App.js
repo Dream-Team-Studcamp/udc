@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -6,15 +6,15 @@ import axios from 'axios';
 import './App.css';
 
 function App() {
-  const [text, setText] = useState('');
-  const [n_keywords, setN] = useState(7); // Default value for n_keywords
-  const [keywords, setKeywords] = useState('');
-  const [udcs, setUdcs] = useState([]);
+  const [text, setText] = useState(localStorage.getItem('text') || '');
+  const [n_keywords, setN] = useState(parseInt(localStorage.getItem('n_keywords')) || 7); // Default value for n_keywords
+  const [keywords, setKeywords] = useState(localStorage.getItem('keywords') || '');
+  const [udcs, setUdcs] = useState(JSON.parse(localStorage.getItem('udcs')) || []);
 
   const fetchKeywords = async () => {
     try {
-      const keywordsRes = await axios.post('http://158.160.156.8:8080/keywords', { text, n_keywords });
-      setKeywords(keywordsRes.data.keywords.join(', ')); 
+      const keywordsRes = await axios.post('http://158.160.151.217:8080/keywords', { text, n_keywords });
+      setKeywords(keywordsRes.data.keywords.join(', '));
     } catch (error) {
       console.error('Error fetching keywords:', error);
     }
@@ -22,7 +22,7 @@ function App() {
 
   const fetchUdcs = async () => {
     try {
-      const udcsRes = await axios.post('http://158.160.156.8:8080/udcs', { text });
+      const udcsRes = await axios.post('http://158.160.151.217:8080/udcs', { text });
       setUdcs(udcsRes.data.udcs);
     } catch (error) {
       console.error('Error fetching UDCs:', error);
@@ -31,7 +31,6 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setUdcs([]);
     fetchKeywords();
     fetchUdcs();
   };
@@ -39,6 +38,22 @@ function App() {
   const handleSliderChange = (event, newValue) => {
     setN(newValue);
   };
+
+  useEffect(() => {
+    localStorage.setItem('text', text);
+  }, [text]);
+
+  useEffect(() => {
+    localStorage.setItem('n_keywords', n_keywords);
+  }, [n_keywords]);
+
+  useEffect(() => {
+    localStorage.setItem('keywords', keywords);
+  }, [keywords]);
+
+  useEffect(() => {
+    localStorage.setItem('udcs', JSON.stringify(udcs));
+  }, [udcs]);
 
   return (
     <div className="container">
@@ -78,7 +93,6 @@ function App() {
       <div className="results">
         <div className="keywords">
           <h2>Ключевые слова</h2>
-
           <TextField
                 id="outlined-multiline-static"
                 value={keywords}
@@ -87,7 +101,6 @@ function App() {
                 sx={{ m: 1, width: '95%' }}
                 variant="outlined"
                 onChange={(e) => setKeywords(e.target.value)} />
-
         </div>
         <div className="udcs">
           <h2>Подходящие УДК</h2>
