@@ -10,6 +10,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from pathlib import Path
+import json
 
 nltk.download("stopwords")
 nltk.download("punkt")
@@ -44,11 +45,12 @@ def clean_text(text: str) -> str:
     return text
 
 
-fuck_1 = pickle.load(
-    open(MODELS_PATH / "udc_dict_1.p", "rb"))
 
-fuck_2 = pickle.load(
-    open(MODELS_PATH / "udc_dict_2.p", "rb"))
+fuck_1 = json.load(
+    open(MODELS_PATH / "udc_dict_1.json", "r", encoding="utf-8"))
+
+fuck_2 = json.load(
+    open(MODELS_PATH / "udc_dict_2.json", "r", encoding="utf-8"))
 
 
 def get_udcs(text: str) -> List[Tuple[str, str]]:
@@ -58,9 +60,14 @@ def get_udcs(text: str) -> List[Tuple[str, str]]:
     proba = log_reg.predict_proba(array)
     top_5_classes = np.argsort(proba)[0][::-1][:5]
     udcs = log_reg.classes_[top_5_classes]
+    probas = proba[0][top_5_classes]
     result = []
-    for udc in udcs:
-        fuck = fuck_1[udc] if udc in fuck_1 else fuck_2[udc]
-        result.append((f"{fuck.id} - {fuck.name}", fuck.url))
+    for i, udc in enumerate(udcs):
+        fuck = fuck_1.get(str(udc))
+        if not fuck:
+            fuck = fuck_2.get(str(udc))
+        if not fuck:
+            continue
+        result.append((f"[{probas[i] * 100:.2f}%] {fuck[3]} - {fuck[2]}", fuck[1]))
 
     return result
