@@ -5,6 +5,8 @@ services:
         build: 
             context: ./udc-app-backend/
             dockerfile: Dockerfile
+        ports: 
+            - "8080:8080"
         restart: always
     nginx:
         depends_on: 

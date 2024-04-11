@@ -13,8 +13,8 @@ function App() {
 
   const fetchKeywords = async () => {
     try {
-      const keywordsRes = await axios.post('http://localhost:8000/keywords', { text, n_keywords });
-      setKeywords(keywordsRes.data.keywords.join(', ')); // Join keywords into a string
+      const keywordsRes = await axios.post('http://127.0.0.1:8080/keywords', { text, n_keywords });
+      setKeywords(keywordsRes.data.keywords.join(', ')); 
     } catch (error) {
       console.error('Error fetching keywords:', error);
     }
@@ -22,7 +22,7 @@ function App() {
 
   const fetchUdcs = async () => {
     try {
-      const udcsRes = await axios.post('http://localhost:8000/udcs', { text });
+      const udcsRes = await axios.post('http://127.0.0.1:8080/udcs', { text });
       setUdcs(udcsRes.data.udcs);
     } catch (error) {
       console.error('Error fetching UDCs:', error);
