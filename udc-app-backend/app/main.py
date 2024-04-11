@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
 from keywords import get_keywords
+from udcs import get_udcs
 
 app = FastAPI()
 
@@ -44,8 +45,7 @@ class UDCSRequest(BaseModel):
 @app.post('/udcs')
 async def process_udcs(req: UDCSRequest):
     text = req.text
-    udcs = [("621.317", "https://teacode.com/online/udc/62/621.317.html"),
-            ("621.317", "https://teacode.com/online/udc/62/621.313.html")]
+    udcs = get_udcs(text)
     return {"udcs": udcs}
 
 
