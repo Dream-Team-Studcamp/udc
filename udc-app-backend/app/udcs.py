@@ -14,6 +14,14 @@ from pathlib import Path
 nltk.download("stopwords")
 nltk.download("punkt")
 
+from dataclasses import dataclass
+@dataclass
+class UDC:
+    depth: int
+    id: str
+    name: str
+    url: str
+
 MODELS_PATH: str = Path(__file__).parent / 'models'
 
 stop_words = set(stopwords.words('russian') + stopwords.words('english'))
@@ -36,6 +44,13 @@ def clean_text(text: str) -> str:
     return text
 
 
+fuck_1 = pickle.load(
+    open(MODELS_PATH / "udc_dict_1.p", "rb"))
+
+fuck_2 = pickle.load(
+    open(MODELS_PATH / "udc_dict_2.p", "rb"))
+
+
 def get_udcs(text: str) -> List[Tuple[str, str]]:
     text = clean_text(text)
     array = vect_tfidf.transform([text])
@@ -43,9 +58,9 @@ def get_udcs(text: str) -> List[Tuple[str, str]]:
     proba = log_reg.predict_proba(array)
     top_5_classes = np.argsort(proba)[0][::-1][:5]
     udcs = log_reg.classes_[top_5_classes]
-    result = [
-        (f"{udc}", f"https://teacode.com/online/udc/{udc}/{udc}.html")
-        if udc != "00" else ("00", "https://teacode.com/online/udc/00/00.html")
-        for udc in udcs
-    ]
+    result = []
+    for udc in udcs:
+        fuck = fuck_1[udc] if udc in fuck_1 else fuck_2[udc]
+        result.append((f"{fuck.id} - {fuck.name}", fuck.url))
+
     return result
