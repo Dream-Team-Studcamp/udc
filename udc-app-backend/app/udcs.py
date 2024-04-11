@@ -68,6 +68,6 @@ def get_udcs(text: str) -> List[Tuple[str, str]]:
             fuck = fuck_2.get(str(udc))
         if not fuck:
             continue
-        result.append((f"[{probas[i] * 100:.2f}%] {fuck[3]} - {fuck[2]}", fuck[1]))
+        result.append((f"{fuck[3]} [{probas[i] * 100:.2f}%]", fuck[1]))
 
     return result
