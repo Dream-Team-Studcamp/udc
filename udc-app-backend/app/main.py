@@ -32,9 +32,12 @@ class KeywordsRequest(BaseModel):
 
 @app.post('/keywords')
 async def process_keywords(req: KeywordsRequest):
-    abstract = req.text
+    text = req.text
     n_keywords = req.n_keywords
-    keywords = get_keywords(abstract, n_keywords)
+    if text.strip() == '' or n_keywords == 0:
+        keywords = []
+    else:
+        keywords = get_keywords(text, n_keywords)
     return {"keywords": keywords}
 
 
@@ -45,7 +48,7 @@ class UDCSRequest(BaseModel):
 @app.post('/udcs')
 async def process_udcs(req: UDCSRequest):
     text = req.text
-    udcs = get_udcs(text)
+    udcs = [] if text.strip() == '' else get_udcs(text)
     return {"udcs": udcs}
 
 
